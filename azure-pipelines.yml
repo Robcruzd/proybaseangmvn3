@@ -11,7 +11,7 @@ variables:
   azureSubscription: '15199966-ddeb-4f5e-8809-22a696b62159'
 
   # Web app name
-  webAppName: 'proybaseangmvn'
+  webAppName: 'proybaseangmvn3con'
 
   # Environment name
   environmentName: 'proybaseangmvn'
@@ -19,10 +19,9 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-  appName: <Name of the Web App>
-  containerRegistry: <Name of the Azure container registry>
-  dockerRegistryServiceConnection: '4fa4efbc-59af-4c0b-8637-1d5bf7f268fc'
-  imageRepository: <Name of image repository>
+  containerRegistry: proybaseangmvn.azurecr.io
+  dockerRegistryServiceConnection: 'bbd1346f-4336-4be7-a366-06a297dec01f'
+  imageRepository: proybaseangmvn3
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
 
@@ -130,15 +129,18 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
-          - task: Docker@2
-            displayName: Build and push an image to container registry
-            inputs:
-              command: buildAndPush
-              repository: $(imageRepository)
-              dockerfile: $(dockerfilePath)
-              containerRegistry: $(dockerRegistryServiceConnection)
-              tags: |
-                $(tag)
+          - task:
+            script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:$(tag)'
+            displayName: Build and package the application
+          # - task: Docker@2
+          #   displayName: Build and push an image to container registry
+          #   inputs:
+          #     command: buildAndPush
+          #     repository: $(imageRepository)
+          #     dockerfile: '**/Dockerfile'
+          #     containerRegistry: $(dockerRegistryServiceConnection)
+          #     tags: |
+          #       $(tag)
 
   - stage: Deploy
     displayName: Deploy stage
@@ -155,5 +157,5 @@ stages:
             displayName: 'Azure Web App on Container Deploy'
             inputs:
               azureSubscription: $(azureSubscription)
-              appName: $(appName)
+              appName: $(webAppName)
               imageName: $(containerRegistry)/$(imageRepository):$(tag)
