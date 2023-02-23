@@ -122,7 +122,7 @@ stages:
             displayName: 'E2E: Teardown'
 
   - stage: Build
-    displayName: Build and push stage
+    displayName: Build and package
     jobs:
       - job: Build
         displayName: Build
