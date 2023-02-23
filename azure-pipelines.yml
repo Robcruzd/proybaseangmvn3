@@ -130,7 +130,7 @@ stages:
           vmImage: $(vmImageName)
         steps:
           - task:
-            script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:$(tag)'
+            script: echo './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:${{variables.tag}}'
             displayName: Build and package the application
           # - task: Docker@2
           #   displayName: Build and push an image to container registry
