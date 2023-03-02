@@ -56,13 +56,6 @@ stages:
                 wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
                 sudo apt install ./google-chrome-stable_current_amd64.deb
             displayName: 'TOOLS: install Chrome'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                sudo add-apt-repository ppa:openjdk-r/ppa
-                sudo apt-get update
-                sudo apt-get install -y openjdk-17-jdk
 
           #----------------------------------------------------------------------
           # Tests
