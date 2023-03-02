@@ -20,7 +20,7 @@ variables:
   vmImageName: 'ubuntu-latest'
 
   containerRegistry: proybaseangmvn.azurecr.io
-  dockerRegistryServiceConnection: 'bbd1346f-4336-4be7-a366-06a297dec01f'
+  dockerRegistryServiceConnection: 'a9711b6e-a907-4497-898a-98ba60a3c21e'
   imageRepository: proybaseangmvn3
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
