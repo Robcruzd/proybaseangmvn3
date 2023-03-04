@@ -59,13 +59,16 @@ stages:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: 'java -version'
-            displayName: 'Verificar versión de Java'
+              script: |
+                sudo apt-get update
+                sudo apt-get install -y openjdk-17-jdk
+                export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+            displayName: 'Cambio a Java 17'
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: 'echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.bashrc'
-            displayName: 'cambio jdk'
+              script: 'java -version'
+            displayName: 'Verificar versión de Java'
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
