@@ -59,7 +59,7 @@ stages:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: 'java -version'
+              script: '/usr/libexec/java_home -V'
             displayName: 'Verificar versión de Java'
           - task: Bash@3
             inputs:
@@ -67,7 +67,7 @@ stages:
               script: |
                 sudo apt-get update
                 sudo apt-get install -y openjdk-17-jdk
-                export JAVA_HOME=/usr/libexec/java_home -v 17
+                export JAVA_HOME=`/usr/libexec/java_home -v 17`
             displayName: 'Cambio a Java 17'
           - task: Bash@3
             inputs:
