@@ -45,35 +45,35 @@ stages:
           #----------------------------------------------------------------------
           # Install all tools and check configuration
           #----------------------------------------------------------------------
-          - task: NodeTool@0
-            inputs:
-              versionSpec: $(NODE_VERSION)
-            displayName: 'TOOLS: install Node.js'
+          # - task: NodeTool@0
+          #   inputs:
+          #     versionSpec: $(NODE_VERSION)
+          #   displayName: 'TOOLS: install Node.js'
+          # - task: Bash@3
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          #       sudo apt install ./google-chrome-stable_current_amd64.deb
+          #   displayName: 'TOOLS: install Chrome'
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: |
-                wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-                sudo apt install ./google-chrome-stable_current_amd64.deb
-            displayName: 'TOOLS: install Chrome'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: '/usr/libexec/java_home -V'
+              script: 'echo $JAVA_HOME'
             displayName: 'Verificar versión de Java'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                sudo apt-get update
-                sudo apt-get install -y openjdk-17-jdk
-                export JAVA_HOME=`/usr/libexec/java_home -v 17`
-            displayName: 'Cambio a Java 17'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'java -version'
-            displayName: 'Verificar versión de Java'
+          # - task: Bash@3
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: |
+          #       sudo apt-get update
+          #       sudo apt-get install -y openjdk-17-jdk
+          #       export JAVA_HOME=`/usr/libexec/java_home -v 17`
+          #   displayName: 'Cambio a Java 17'
+          # - task: Bash@3
+          #   inputs:
+          #     targetType: 'inline'
+          #     script: 'java -version'
+          #   displayName: 'Verificar versión de Java'
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
