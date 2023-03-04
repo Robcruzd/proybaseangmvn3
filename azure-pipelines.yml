@@ -8,7 +8,7 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '15199966-ddeb-4f5e-8809-22a696b62159'
+  azureSubscription: '9bdaa5b7-dd74-41a0-8785-63a9c4905a9f'
 
   # Web app name
   webAppName: 'proybaseangmvn3con'
@@ -20,7 +20,7 @@ variables:
   vmImageName: 'ubuntu-latest'
 
   containerRegistry: proybaseangmvn.azurecr.io
-  dockerRegistryServiceConnection: 'bbd1346f-4336-4be7-a366-06a297dec01f'
+  dockerRegistryServiceConnection: 'a9711b6e-a907-4497-898a-98ba60a3c21e'
   imageRepository: proybaseangmvn3
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
@@ -56,6 +56,7 @@ stages:
                 wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
                 sudo apt install ./google-chrome-stable_current_amd64.deb
             displayName: 'TOOLS: install Chrome'
+
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
