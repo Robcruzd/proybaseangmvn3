@@ -59,8 +59,14 @@ stages:
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: 'echo $JAVA_HOME'
+              script: 'ls /usr/lib/jvm/'
             displayName: 'Verificar versión de Java'
+          - task: JavaToolInstaller@0
+            inputs:
+              versionSpec: '17'
+              jdkArchitectureOption: 'x64'
+              jdkSourceOption: 'PreInstalled'
+            displayName: 'Cambiar versión'
           # - task: Bash@3
           #   inputs:
           #     targetType: 'inline'
@@ -69,11 +75,11 @@ stages:
           #       sudo apt-get install -y openjdk-17-jdk
           #       export JAVA_HOME=`/usr/libexec/java_home -v 17`
           #   displayName: 'Cambio a Java 17'
-          # - task: Bash@3
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: 'java -version'
-          #   displayName: 'Verificar versión de Java'
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'java -version'
+            displayName: 'Verificar versión de Java'
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
