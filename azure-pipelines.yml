@@ -56,7 +56,16 @@ stages:
                 wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
                 sudo apt install ./google-chrome-stable_current_amd64.deb
             displayName: 'TOOLS: install Chrome'
-
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: '| java -version'
+            displayName: 'Verificar versión de Java'
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.bashrc'
+            displayName: 'cambio jdk'
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
