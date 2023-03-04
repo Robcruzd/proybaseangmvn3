@@ -45,116 +45,99 @@ stages:
           #----------------------------------------------------------------------
           # Install all tools and check configuration
           #----------------------------------------------------------------------
-          # - task: NodeTool@0
-          #   inputs:
-          #     versionSpec: $(NODE_VERSION)
-          #   displayName: 'TOOLS: install Node.js'
-          # - task: Bash@3
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          #       sudo apt install ./google-chrome-stable_current_amd64.deb
-          #   displayName: 'TOOLS: install Chrome'
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+            displayName: 'TOOLS: install Node.js'
           - task: Bash@3
             inputs:
               targetType: 'inline'
-              script: 'ls /usr/lib/jvm/'
-            displayName: 'Verificar versión de Java'
+              script: |
+                wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                sudo apt install ./google-chrome-stable_current_amd64.deb
+            displayName: 'TOOLS: install Chrome'
           - task: JavaToolInstaller@0
             inputs:
               versionSpec: '17'
               jdkArchitectureOption: 'x64'
               jdkSourceOption: 'PreInstalled'
             displayName: 'Cambiar versión'
-          # - task: Bash@3
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       sudo apt-get update
-          #       sudo apt-get install -y openjdk-17-jdk
-          #       export JAVA_HOME=`/usr/libexec/java_home -v 17`
-          #   displayName: 'Cambio a Java 17'
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: 'java -version'
-            displayName: 'Verificar versión de Java'
+
           #----------------------------------------------------------------------
           # Tests
           #----------------------------------------------------------------------
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'install'
-          #   displayName: 'INSTALL: launch npm install'
-          # - script: chmod +x mvnw
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:backend:test'
-          #   displayName: 'TESTS: backend'
-          # - task: PublishTestResults@2
-          #   inputs:
-          #     testResultsFormat: 'JUnit'
-          #     testResultsFiles: '**/TEST-*.xml'
-          #     searchFolder: '$(Build.SourcesDirectory)/target/test-results'
-          #   condition: succeededOrFailed()
-          #   displayName: 'TESTS: publish test results'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:frontend:test'
-          #   displayName: 'TESTS: frontend'
-          # - task: PublishTestResults@2
-          #   inputs:
-          #     testResultsFormat: 'JUnit'
-          #     testResultsFiles: '$(Build.SourcesDirectory)/target/test-results/TESTS-results-jest.xml'
-          #   condition: succeededOrFailed()
-          #   displayName: 'TESTS: publish test results'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run java:jar:prod'
-          #   displayName: 'TESTS: packaging'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:e2e:package'
-          #   displayName: 'E2E: Package'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:e2e:prepare'
-          #   displayName: 'E2E: Prepare'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:e2e:run'
-          #   displayName: 'E2E: Run'
-          #   env:
-          #     CYPRESS_ENABLE_RECORD: false
-          # - task: PublishPipelineArtifact@1
-          #   inputs:
-          #     artifactName: 'cypress-screenshots'
-          #     targetPath: '$(Build.SourcesDirectory)/target/cypress/screenshots'
-          #   condition: failed()
-          #   displayName: 'E2E: Publish Cypress Screenshots'
-          # - task: Npm@1
-          #   inputs:
-          #     command: 'custom'
-          #     customCommand: ' run ci:e2e:teardown'
-          #   displayName: 'E2E: Teardown'
+          - task: Npm@1
+            inputs:
+              command: 'install'
+            displayName: 'INSTALL: launch npm install'
+          - script: chmod +x mvnw
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:backend:test'
+            displayName: 'TESTS: backend'
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/TEST-*.xml'
+              searchFolder: '$(Build.SourcesDirectory)/target/test-results'
+            condition: succeededOrFailed()
+            displayName: 'TESTS: publish test results'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:frontend:test'
+            displayName: 'TESTS: frontend'
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '$(Build.SourcesDirectory)/target/test-results/TESTS-results-jest.xml'
+            condition: succeededOrFailed()
+            displayName: 'TESTS: publish test results'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run java:jar:prod'
+            displayName: 'TESTS: packaging'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:e2e:package'
+            displayName: 'E2E: Package'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:e2e:prepare'
+            displayName: 'E2E: Prepare'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:e2e:run'
+            displayName: 'E2E: Run'
+            env:
+              CYPRESS_ENABLE_RECORD: false
+          - task: PublishPipelineArtifact@1
+            inputs:
+              artifactName: 'cypress-screenshots'
+              targetPath: '$(Build.SourcesDirectory)/target/cypress/screenshots'
+            condition: failed()
+            displayName: 'E2E: Publish Cypress Screenshots'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: ' run ci:e2e:teardown'
+            displayName: 'E2E: Teardown'
 
-  # - stage: Build
-  #   displayName: Build and package
-  #   jobs:
-  #     - job: Build
-  #       displayName: Build
-  #       pool:
-  #         vmImage: $(vmImageName)
-  #       steps:
-  #         - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3'
-  #           displayName: 'Build and package the application'
+  - stage: Build
+    displayName: Build and package
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3'
+            displayName: 'Build and package the application'
   # - task: Docker@2
   #   displayName: Build and push an image to container registry
   #   inputs:
