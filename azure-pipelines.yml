@@ -133,58 +133,49 @@ stages:
   #     customCommand: ' run ci:e2e:teardown'
   #   displayName: 'E2E: Teardown'
 
-  - stage: Build
-    displayName: Build and package
-    jobs:
-      - job: Build
-        displayName: Build
-        pool:
-          vmImage: $(vmImageName)
-        steps:
-          - task: JavaToolInstaller@0
-            inputs:
-              versionSpec: '17'
-              jdkArchitectureOption: 'x64'
-              jdkSourceOption: 'PreInstalled'
-            displayName: 'Change Java version'
-          - task: Docker@2
-            displayName: Login to Azure Container Registry
-            inputs:
-              command: login
-              containerRegistry: proybaseangmvn
-          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:latest'
-            displayName: 'Build and package the application'
-          - task: Docker@2
-            displayName: Push Docker image to ACR
-            inputs:
-              command: push
-              repository: proybaseangmvn.azurecr.io/proybaseangmvn3
-              tags: |
-                latest
-  # - task: Docker@2
-  #   displayName: Build and push an image to container registry
-  #   inputs:
-  #     command: buildAndPush
-  #     repository: $(imageRepository)
-  #     dockerfile: '**/Dockerfile'
-  #     containerRegistry: $(dockerRegistryServiceConnection)
-  #     tags: |
-  #       $(tag)
-
-  # - stage: Deploy
-  #   displayName: Deploy stage
-  #   dependsOn: Build
-  #   condition: succeeded()
+  # - stage: Build
+  #   displayName: Build and package
   #   jobs:
-  #     - job: Deploy
-  #       displayName: Deploy
+  #     - job: Build
+  #       displayName: Build
   #       pool:
   #         vmImage: $(vmImageName)
   #       steps:
-  #         ## Add the below snippet at the end of your pipeline
-  #         - task: AzureWebAppContainer@1
-  #           displayName: 'Azure Web App on Container Deploy'
+  #         - task: JavaToolInstaller@0
   #           inputs:
-  #             azureSubscription: $(azureSubscription)
-  #             appName: $(webAppName)
-  #             imageName: $(containerRegistry)/$(imageRepository):$(tag)
+  #             versionSpec: '17'
+  #             jdkArchitectureOption: 'x64'
+  #             jdkSourceOption: 'PreInstalled'
+  #           displayName: 'Change Java version'
+  #         - task: Docker@2
+  #           displayName: Login to Azure Container Registry
+  #           inputs:
+  #             command: login
+  #             containerRegistry: proybaseangmvn
+  #         - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:latest'
+  #           displayName: 'Build and package the application'
+  #         - task: Docker@2
+  #           displayName: Push Docker image to ACR
+  #           inputs:
+  #             command: push
+  #             repository: proybaseangmvn.azurecr.io/proybaseangmvn3
+  #             tags: |
+  #               latest
+
+  - stage: Deploy
+    displayName: Deploy stage
+    # dependsOn: Build
+    # condition: succeeded()
+    jobs:
+      - job: Deploy
+        displayName: Deploy
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          ## Add the below snippet at the end of your pipeline
+          - task: AzureWebAppContainer@1
+            displayName: 'Azure Web App on Container Deploy'
+            inputs:
+              azureSubscription: $(azureSubscription)
+              appName: $(webAppName)
+              imageName: $(containerRegistry)/$(imageRepository):$(tag)
