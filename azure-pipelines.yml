@@ -152,15 +152,13 @@ stages:
             inputs:
               command: login
               containerRegistry: proybaseangmvn
-          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3:$(tag)'
+          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=proybaseangmvn.azurecr.io/proybaseangmvn3'
             displayName: 'Build and package the application'
           - task: Docker@2
             displayName: Push Docker image to ACR
             inputs:
               command: push
               repository: proybaseangmvn.azurecr.io/proybaseangmvn3
-              tags: |
-                $(tag)
 
   - stage: Deploy
     displayName: Deploy stage
