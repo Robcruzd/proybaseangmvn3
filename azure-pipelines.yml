@@ -160,7 +160,7 @@ stages:
               command: push
               repository: proybaseangmvn.azurecr.io/proybaseangmvn3
               tags: |
-                latest
+                $(tag)
 
   - stage: Deploy
     displayName: Deploy stage
@@ -178,4 +178,4 @@ stages:
             inputs:
               azureSubscription: $(azureSubscriptionServiceConnection)
               appName: $(webAppName)
-              imageName: $(containerRegistry)/$(imageRepository):latest
+              imageName: $(containerRegistry)/$(imageRepository):$(tag)
