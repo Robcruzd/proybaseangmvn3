@@ -34,7 +34,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://proybaseangmvn3.postgres.database.azure.com:5432/proybaseangmvn3
-    username: proybaseangmvn3
+    username: proybaseangmvn3@proybaseangmvn3
     password: Prueba01
     hikari:
       poolName: Hikari
