@@ -152,7 +152,7 @@ stages:
             inputs:
               command: login
               containerRegistry: proybaseangmvn
-          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=@(containerRegistry)/@(imageRepository):@(tag)'
+          - script: './mvnw package -Pprod verify jib:build -Djib.to.image=$(containerRegistry)/$(imageRepository):$(tag)'
             displayName: 'Build and package the application'
           # - task: Docker@2
           #   displayName: Push Docker image to ACR
