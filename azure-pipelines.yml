@@ -12,7 +12,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'd4048e56-abe7-41ab-baab-47d9846a4fdc'
   imageRepository: proybaseangmvn3
-  containerRegistry: proybaseangmvn.azurecr.io
+  containerRegistry: proybaseangmvn3.azurecr.io
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'proybaseangmvn31037a0e4-auth'
