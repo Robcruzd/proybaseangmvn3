@@ -13,6 +13,7 @@ variables:
   dockerRegistryServiceConnection: 'd4048e56-abe7-41ab-baab-47d9846a4fdc'
   imageRepository: proybaseangmvn3
   containerRegistry: proybaseangmvn3.azurecr.io
+  containerRegistryName: proybaseangmvn3
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'proybaseangmvn31037a0e4-auth'
@@ -42,7 +43,7 @@ stages:
             displayName: Login to Azure Container Registry
             inputs:
               command: login
-              containerRegistry: proybaseangmvn
+              containerRegistry: $(containerRegistryName)
           - script: './mvnw package -Pprod verify jib:build -Djib.to.image=$(containerRegistry)/$(imageRepository):$(tag)'
             displayName: 'Build and package the application'
 
