@@ -47,6 +47,9 @@ stages:
           - script: './mvnw package -Pprod verify jib:build -Djib.to.image=$(containerRegistry)/$(imageRepository):$(tag)'
             displayName: 'Build and package the application'
 
+          - upload: manifests
+            artifact: manifests
+
   - stage: Deploy
     displayName: Deploy stage
     dependsOn: Build
