@@ -62,7 +62,7 @@ jobs:
         run: npm run ci:e2e:teardown
 
   build:
-    runs-on: ${{ env.vmImageName }}
+    runs-on: $vmImageName
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -70,7 +70,7 @@ jobs:
     - name: Maven Package
       uses: actions/setup-java@v2
       with:
-        java-version: ${{ env.NODE_VERSION }}
+        java-version: $NODE_VERSION
     - name: Maven Packagerun
       run: mvn package
 
@@ -88,8 +88,8 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ${{ env.vmImageName }}
-    environment: ${{ env.environmentName }}
+    runs-on: $vmImageName
+    environment: $environmentName
     steps:
     - name: Download Artifact
       uses: actions/download-artifact@v2
@@ -100,9 +100,9 @@ jobs:
     - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.webAppName }}
+        app-name: $webAppName
         package: ${{ github.workspace }}/drop/**/target/*.?(war|jar)
-        subscription: ${{ env.azureSubscription }}
+        subscription: $azureSubscription
         action: 'deploy'
         platform: 'java'
         slot-name: 'production'
