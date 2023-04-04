@@ -96,7 +96,7 @@ jobs:
         name: drop
       working-directory: ${{ github.workspace }}
 
-    - name: Azure Web App Deploy: proybaseangmvn
+    - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.webAppName }}
