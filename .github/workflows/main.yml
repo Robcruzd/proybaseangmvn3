@@ -71,6 +71,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: ${{ env.NODE_VERSION }}
+    - name: Maven Packagerun
       run: mvn package
 
     - name: Copy files to artifact staging directory
