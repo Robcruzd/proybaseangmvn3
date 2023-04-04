@@ -95,7 +95,9 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: drop
-      working-directory: ${{ github.workspace }}
+    - name: Download Artifactrun
+      run: |
+        cd $(System.DefaultWorkingDirectory)
 
     - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
