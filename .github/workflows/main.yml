@@ -71,7 +71,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
-        java-version: 16.17.0
+        java-version: 17
     - name: Maven Packagerun
       run: mvn package
 
