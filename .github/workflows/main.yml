@@ -62,7 +62,7 @@ jobs:
   #       run: npm run ci:e2e:teardown
 
   build:
-    runs-on: ${{env.vmImageName}}
+    runs-on: $vmImageName
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
