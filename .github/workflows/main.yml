@@ -62,7 +62,7 @@ jobs:
   #       run: npm run ci:e2e:teardown
 
   build:
-    runs-on: $vmImageName
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
