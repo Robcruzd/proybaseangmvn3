@@ -1,3 +1,7 @@
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 name: Application CI
 on: [push, pull_request]
 env:
@@ -99,11 +103,11 @@ jobs:
     - name: Download Artifactrun
       run: |
         cd $(System.DefaultWorkingDirectory)
-    - name: Set up job environment
-      run: |
-        echo "ACTIONS_ID_TOKEN_REQUEST_URL=${{ github.actions.idTokenRequestUrl }}" >> $GITHUB_ENV
-        echo "ACTIONS_ID_TOKEN_REQUEST_AUTH_URL=${{ github.actions.idTokenRequestAuthUrl }}" >> $GITHUB_ENV
-        echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN_URL=${{ github.actions.idTokenRequestTokenUrl }}" >> $GITHUB_ENV
+    # - name: Set up job environment
+    #   run: |
+    #     echo "ACTIONS_ID_TOKEN_REQUEST_URL=${{ github.actions.idTokenRequestUrl }}" >> $GITHUB_ENV
+    #     echo "ACTIONS_ID_TOKEN_REQUEST_AUTH_URL=${{ github.actions.idTokenRequestAuthUrl }}" >> $GITHUB_ENV
+    #     echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN_URL=${{ github.actions.idTokenRequestTokenUrl }}" >> $GITHUB_ENV
     - name: Login Azure
       uses: azure/login@v1
       with:
