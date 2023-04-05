@@ -109,7 +109,7 @@ jobs:
     - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
       with:
-        app-name: proybaseangmvn3
+        app-name: proybaseangmvn3appser
         package: ${{ github.workspace }}/drop/**/target/*.?(war|jar)
         subscription: 4dd56670-ac02-43d7-a753-28942b6c28f2
         action: 'deploy'
