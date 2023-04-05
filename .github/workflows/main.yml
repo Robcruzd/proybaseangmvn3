@@ -4,7 +4,7 @@ env:
   azureSubscription: '15199966-ddeb-4f5e-8809-22a696b62159'
   webAppName: 'proybaseangmvn'
   environmentName: 'proybaseangmvn'
-  vmImageName: 'ubuntu-latest'
+  vmImageName: ubuntu-latest
   NODE_VERSION: 16.17.0
   # SPRING_OUTPUT_ANSI_ENABLED: NEVER
   SPRING_JPA_SHOW_SQL: false
@@ -62,7 +62,7 @@ jobs:
   #       run: npm run ci:e2e:teardown
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: $vmImageName
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
