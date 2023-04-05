@@ -99,6 +99,12 @@ jobs:
     - name: Download Artifactrun
       run: |
         cd $(System.DefaultWorkingDirectory)
+    - name: Login Azure
+      uses: azure/login@v1
+      with:
+        client-id: 79eb4122-51be-4f00-9699-c592adefd52b
+        tenant-id: 3355dc5e-067f-42b8-8d1a-1b1ebb6657de
+        subscription-id: 4dd56670-ac02-43d7-a753-28942b6c28f2
 
     - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
