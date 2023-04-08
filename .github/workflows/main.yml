@@ -15,6 +15,7 @@ env:
   JHI_DISABLE_WEBPACK_LOGS: true
   NG_CLI_ANALYTICS: 'false'
   JHI_E2E_HEADLESS: true
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
 jobs:
   # pipeline:
   #   name: proybaseangmvn3 pipeline
@@ -123,6 +124,7 @@ jobs:
         app-name: proybaseangmvn3appser
         package: ${{ github.workspace }}/drop/**/target/*.?(war|jar)
         subscription: 4dd56670-ac02-43d7-a753-28942b6c28f2
+        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
         action: 'deploy'
         platform: 'java'
         slot-name: 'production'
