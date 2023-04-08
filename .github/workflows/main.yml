@@ -80,17 +80,17 @@ jobs:
     - name: Maven Packagerun
       run: mvn package
 
-    - name: Copy files to artifact staging directory
-      run: |
-        mkdir -p ${{ github.workspace }}/drop
-        cp -R target/proy*.jar ${{ github.workspace }}/drop/
-      working-directory: ${{ github.workspace }}
+    # - name: Copy files to artifact staging directory
+    #   run: |
+    #     mkdir -p ${{ github.workspace }}/drop
+    #     cp -R target/proy*.jar ${{ github.workspace }}/drop/
+    #   working-directory: ${{ github.workspace }}
 
     - name: Publish Artifact
       uses: actions/upload-artifact@v3
       with:
         name: drop
-        path: ${{ github.workspace }}/drop
+        path: ${{ github.workspace }}/target/proy*.jar
 
   deploy:
     needs: build
