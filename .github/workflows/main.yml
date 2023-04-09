@@ -80,7 +80,7 @@ jobs:
     # - name: Maven Packagerun
     #   run: mvn package
     - name: Package application
-        run: npm run java:jar:prod
+      run: npm run java:jar:prod
 
     # - name: Copy files to artifact staging directory
     #   run: |
