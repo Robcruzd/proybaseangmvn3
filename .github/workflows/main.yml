@@ -5,9 +5,6 @@ permissions:
 name: Application CI
 on: [push, pull_request]
 env:
-  webAppName: proybaseangmvn3appser
-  environmentName: 'proybaseangmvn3appser'
-  VM_IMAGE_NAME: ubuntu-latest
   NODE_VERSION: 16.17.0
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
 jobs:
@@ -70,7 +67,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ env.environmentName }} 
+    environment: proybaseangmvn3appser
     steps:
     - name: Download Artifact
       uses: actions/download-artifact@v3
@@ -84,7 +81,7 @@ jobs:
     - name: Azure Web App Deploy proybaseangmvn
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.webAppName }} 
+        app-name: proybaseangmvn3appser
         package: proy*.jar
         publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
         slot-name: 'production'
