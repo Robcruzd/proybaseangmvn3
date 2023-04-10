@@ -6,7 +6,7 @@ name: Application CI
 on: [push, pull_request]
 env:
   webAppName: proybaseangmvn3appser
-  environmentName: proybaseangmvn3appser
+  environmentName: 'proybaseangmvn3appser'
   VM_IMAGE_NAME: ubuntu-latest
   NODE_VERSION: 16.17.0
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
