@@ -1,11 +1,11 @@
 version: 2.1
 jobs:
   build:
-    # machine:
-    #   image: ubuntu-2004:current
-    docker:
-      - image: cimg/node:16.17.0
-      - image: cimg/openjdk:17.0
+    machine:
+      image: ubuntu-2004:current
+    # docker:
+    #   - image: cimg/node:16.17.0
+    #   - image: cimg/openjdk:17.0
     resource_class: large
     steps:
       - checkout
@@ -15,6 +15,10 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
             # Perform a Partial Cache Restore (https://circleci.com/docs/2.0/caching/#restoring-cache)
             - v1-dependencies-
+      - run:
+          name: Install Java 17
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
       - run:
           name: Print Java Version
           command: 'java -version'
