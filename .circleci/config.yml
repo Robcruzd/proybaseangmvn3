@@ -60,7 +60,7 @@ workflows:
   sample:
     jobs:
       - build
-    filters:
-      branches:
-        only:
-          - feature/circleci
+            filters:
+                branches:
+                    only:
+                        - feature/circleci
