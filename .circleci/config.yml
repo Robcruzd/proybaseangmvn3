@@ -59,7 +59,7 @@ workflows:
   version: 2
   sample:
     jobs:
-      - build
+      - build:
             filters:
                 branches:
                     only:
