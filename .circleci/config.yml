@@ -4,8 +4,8 @@ jobs:
     # machine:
     #   image: ubuntu-2004:current
     docker:
-      - image: circleci/node:16.17.0
-      - image: circleci/openjdk:17-jdk
+      - image: cimg/node:16.17.0
+      - image: cimg/openjdk:17-jdk
     resource_class: large
     steps:
       - checkout
