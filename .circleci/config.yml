@@ -56,10 +56,11 @@ jobs:
       #     command: npm run ci:e2e:teardown
 
 workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  version: 2
+  sample:
     jobs:
       - build
-    branches:
-      only:
-        - feature/circleci
+    filters:
+      branches:
+        only:
+          - feature/circleci
