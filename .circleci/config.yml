@@ -104,14 +104,14 @@ workflows:
       #               only:
       #                   - feature/circleci
       - deliver
-            # filters:
-            #     branches:
-            #         only:
-            #             - feature/circleci
+          filters:
+              branches:
+                  only:
+                      - feature/circleci
       - deploy:
           requires:
               - deliver
-            # filters:
-            #     branches:
-            #         only:
-            #             - feature/circleci
+          filters:
+              branches:
+                  only:
+                      - feature/circleci
