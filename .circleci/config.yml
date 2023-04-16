@@ -3,9 +3,6 @@ jobs:
   build:
     machine:
       image: ubuntu-2004:current
-    # docker:
-    #   - image: cimg/node:16.17.0
-    #   - image: cimg/openjdk:17.0
     resource_class: large
     steps:
       - checkout
@@ -22,14 +19,6 @@ jobs:
       - run:
           name: Set Java 17 as default
           command: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-      - run:
-          name: Verify Java Version
-          command: |
-            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-            java -version
-      # - run:
-      #     name: Print Java Version
-      #     command: 'java -version'
       - run:
           name: Print Node Version
           command: 'node -v'
@@ -50,9 +39,6 @@ jobs:
           name: Give Executable Power
           command: 'chmod +x mvnw'
       - run:
-          name: Print Java Version
-          command: 'java -version'
-      - run:
           name: Backend tests
           command: |
             export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
@@ -60,20 +46,20 @@ jobs:
       - run:
           name: Run Front End Tests
           command: npm run ci:frontend:test
-      # - run:
-      #     name: 'E2E: Package'
-      #     command: npm run ci:e2e:package
-      # - run:
-      #     name: 'E2E: Prepare'
-      #     command: npm run ci:e2e:prepare
-      # - run:
-      #     name: 'E2E: Run'
-      #     command: npm run ci:e2e:run
-      #     environment:
-      #       CYPRESS_ENABLE_RECORD: false
-      # - run:
-      #     name: 'E2E: Teardown'
-      #     command: npm run ci:e2e:teardown
+      - run:
+          name: 'E2E: Package'
+          command: npm run ci:e2e:package
+      - run:
+          name: 'E2E: Prepare'
+          command: npm run ci:e2e:prepare
+      - run:
+          name: 'E2E: Run'
+          command: npm run ci:e2e:run
+          environment:
+            CYPRESS_ENABLE_RECORD: false
+      - run:
+          name: 'E2E: Teardown'
+          command: npm run ci:e2e:teardown
 
 workflows:
   version: 2
