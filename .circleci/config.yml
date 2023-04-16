@@ -26,7 +26,6 @@ jobs:
           name: Verify Java Version
           command: |
             export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-            java_home
             java -version
       # - run:
       #     name: Print Java Version
