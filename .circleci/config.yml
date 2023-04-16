@@ -63,18 +63,12 @@ jobs:
   deliver:
     machine:
       image: ubuntu-2004:current
-    resource_class: large
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
-            # Perform a Partial Cache Restore (https://circleci.com/docs/2.0/caching/#restoring-cache)
-            - v1-dependencies-
       - run:
           name: Install Java 17
           command: |
-            find . -name "package.json"
+            sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
       - run: 
           name: Generate JAR
           command: |
