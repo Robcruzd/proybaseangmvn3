@@ -23,8 +23,14 @@ jobs:
           name: Set Java 17 as default
           command: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
       - run:
-          name: Print Java Version
-          command: 'java -version'
+          name: Verify Java Version
+          command: |
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+            java_home
+            java -version
+      # - run:
+      #     name: Print Java Version
+      #     command: 'java -version'
       - run:
           name: Print Node Version
           command: 'node -v'
