@@ -64,8 +64,6 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
-      - attach_workspace:
-          at: .
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
