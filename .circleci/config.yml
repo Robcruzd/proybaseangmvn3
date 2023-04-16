@@ -70,9 +70,11 @@ jobs:
           name: Install Java 17
           command: |
             sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
-      - run: |
-        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
-        npm run java:jar:prod
+      - run: 
+          name: Generate JAR
+          command: |
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
+            npm run java:jar:prod
       - persist_to_workspace:
           root: .
           paths:
