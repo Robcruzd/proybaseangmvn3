@@ -103,7 +103,7 @@ workflows:
       #           branches:
       #               only:
       #                   - feature/circleci
-      - deliver
+      - deliver:
           filters:
               branches:
                   only:
