@@ -69,7 +69,7 @@ jobs:
       - run:
           name: Install Java 17
           command: |
-            sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
+            find . -name "package.json"
       - run: 
           name: Generate JAR
           command: |
