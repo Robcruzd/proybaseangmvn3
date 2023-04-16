@@ -63,7 +63,9 @@ jobs:
   deliver:
     machine:
       image: ubuntu-2004:current
+    resource_class: large
     steps:
+      - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
