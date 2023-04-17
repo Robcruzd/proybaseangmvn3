@@ -93,7 +93,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - azure-cli/install
+      # - azure-cli/install
       - azure-cli/login:
           az-service-principal-id: ab795cd7-5b59-4d1d-afb2-fa04b04db278
           az-service-principal-password: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
