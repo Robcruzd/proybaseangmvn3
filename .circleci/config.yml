@@ -82,32 +82,32 @@ jobs:
           root: .
           paths:
             - target/proy*.jar
-      - store_artifacts:
-          path: target/proy*.jar
+      # - store_artifacts:
+      #     path: target/proy*.jar
 
-  deploy:
-    environment:
-      AZURE_WEBAPP_PUBLISH_PROFILE: $AZURE_WEBAPP_PUBLISH_PROFILE
-    docker:
-      - image: "mcr.microsoft.com/azure-cli"
-    steps:
-      - attach_workspace:
-          at: .
-      # - run:
-      #     name: Install Azure CLI
-      #     command: |
-      #       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-      - run:
-          name: Authenticate with Azure
-          command: |
-            az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
-      - run:
-          name: Deploy to Azure
-          command: |
-            az webapp deployment source config-zip -g proybase -n proybaseappservi --src $(pwd)/target/*.jar
-      # - run: |
-      #     az login --service-principal --username "ab795cd7-5b59-4d1d-afb2-fa04b04db278" --password "I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh" --tenant "adce66e5-0a46-4c70-b26c-98866bb294ea"
-      #     az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type java --verbose
+  # deploy:
+  #   environment:
+  #     AZURE_WEBAPP_PUBLISH_PROFILE: $AZURE_WEBAPP_PUBLISH_PROFILE
+  #   docker:
+  #     - image: "mcr.microsoft.com/azure-cli"
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     # - run:
+  #     #     name: Install Azure CLI
+  #     #     command: |
+  #     #       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  #     - run:
+  #         name: Authenticate with Azure
+  #         command: |
+  #           az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
+  #     - run:
+  #         name: Deploy to Azure
+  #         command: |
+  #           az webapp deployment source config-zip -g proybase -n proybaseappservi --src $(pwd)/target/*.jar
+  #     # - run: |
+  #     #     az login --service-principal --username "ab795cd7-5b59-4d1d-afb2-fa04b04db278" --password "I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh" --tenant "adce66e5-0a46-4c70-b26c-98866bb294ea"
+  #     #     az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type java --verbose
 
 workflows:
   version: 2
@@ -123,10 +123,10 @@ workflows:
               branches:
                   only:
                       - feature/circleci
-      - deploy:
-          requires:
-              - deliver
-          filters:
-              branches:
-                  only:
-                      - feature/circleci
+      # - deploy:
+      #     requires:
+      #         - deliver
+      #     filters:
+      #         branches:
+      #             only:
+      #                 - feature/circleci
