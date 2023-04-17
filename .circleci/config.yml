@@ -1,4 +1,7 @@
 version: 2.1
+
+orbs:
+  azure-cli: circleci/azure-cli@1.1.1
 environment:
   AZURE_CLIENT_ID: ab795cd7-5b59-4d1d-afb2-fa04b04db278
   AZURE_CLIENT_SECRET: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
