@@ -1,7 +1,4 @@
 version: 2.1
-
-orbs:
-  azure-cli: circleci/azure-cli@1.2.2
 environment:
   AZURE_CLIENT_ID: ab795cd7-5b59-4d1d-afb2-fa04b04db278
   AZURE_CLIENT_SECRET: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
@@ -91,27 +88,27 @@ jobs:
   deploy:
     environment:
       AZURE_WEBAPP_PUBLISH_PROFILE: $AZURE_WEBAPP_PUBLISH_PROFILE
-    machine:
-      image: ubuntu-2004:current
+    docker:
+      - image: "mcr.microsoft.com/azure-cli"
     steps:
       - attach_workspace:
           at: .
-      - azure-cli/install
-      - azure-cli/login:
-          az-service-principal-id: ab795cd7-5b59-4d1d-afb2-fa04b04db278
-          az-service-principal-password: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
-          az-tenant-id: adce66e5-0a46-4c70-b26c-98866bb294ea
-      - azure-cli/webapp-deploy:
-          resource-group: proybase
-          name: proybaseappservi
-          package: target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
-          # slot: production
-      # - attach_workspace:
-      #     at: .
-      # # - run:
-      # #     name: Install Azure CLI
-      # #     command: |
-      # #       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      # - azure-cli/install
+      # - azure-cli/login:
+      #     az-service-principal-id: ab795cd7-5b59-4d1d-afb2-fa04b04db278
+      #     az-service-principal-password: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
+      #     az-tenant-id: adce66e5-0a46-4c70-b26c-98866bb294ea
+      # - azure-cli/webapp-deploy:
+      #     resource-group: proybase
+      #     name: proybaseappservi
+      #     package: target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
+      #     # slot: production
+      - attach_workspace:
+          at: .
+      # - run:
+      #     name: Install Azure CLI
+      #     command: |
+      #       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       # - run:
       #     name: Authenticate with Azure
       #     command: |
@@ -120,9 +117,9 @@ jobs:
       #     name: Deploy to Azure
       #     command: |
       #       az webapp deployment source config-zip -g proybase -n proybaseappservi --src $(pwd)/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
-      # - run: |
-      #     az login --service-principal --username "ab795cd7-5b59-4d1d-afb2-fa04b04db278" --password "I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh" --tenant "adce66e5-0a46-4c70-b26c-98866bb294ea"
-      #     az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type java --verbose
+      - run: |
+          az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
+          az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type java --verbose
 
 workflows:
   version: 2
