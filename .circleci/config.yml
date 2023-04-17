@@ -83,7 +83,7 @@ jobs:
       #     paths:
       #       - target/proy*.jar
       - store_artifacts:
-          path: target/proy*.jar
+          path: /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
 
   # deploy:
   #   environment:
