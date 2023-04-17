@@ -123,10 +123,10 @@ workflows:
               branches:
                   only:
                       - feature/circleci
-      # - deploy:
-      #     requires:
-      #         - deliver
-      #     filters:
-      #         branches:
-      #             only:
-      #                 - feature/circleci
+      - deploy:
+          requires:
+              - deliver
+          filters:
+              branches:
+                  only:
+                      - feature/circleci
