@@ -1,55 +1,50 @@
 version: 2.1
-environment:
-  AZURE_CLIENT_ID: ab795cd7-5b59-4d1d-afb2-fa04b04db278
-  AZURE_CLIENT_SECRET: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
-  AZURE_TENANT_ID: adce66e5-0a46-4c70-b26c-98866bb294ea
 jobs:
-  # build_test:
-  #   machine:
-  #     image: ubuntu-2004:current
-  #   resource_class: large
-  #   steps:
-  #     - checkout
-  #     # Download and cache dependencies
-  #     - restore_cache:
-  #         keys:
-  #           - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
-  #           # Perform a Partial Cache Restore (https://circleci.com/docs/2.0/caching/#restoring-cache)
-  #           - v1-dependencies-
-  #     - run:
-  #         name: Install Java 17
-  #         command: |
-  #           sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
-  #     - run:
-  #         name: Set Java 17 as default
-  #         command: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-  #     - run:
-  #         name: Print Node Version
-  #         command: 'node -v'
-  #     - run:
-  #         name: Print NPM Version
-  #         command: 'npm -v'
-  #     - run:
-  #         name: Install Node Modules
-  #         command: 'npm install'
-  #     - save_cache:
-  #         paths:
-  #           - node
-  #           - node_modules
-  #           - ~/.m2
-  #         key: v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
+  build_test:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
+    steps:
+      - checkout
+      # Download and cache dependencies
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
+      #       - v1-dependencies-
+      - run:
+          name: Install Java 17
+          command: |
+            sudo apt-get update && sudo apt-get install -y openjdk-17-jdk
+      - run:
+          name: Set Java 17 as default
+          command: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+      - run:
+          name: Print Node Version
+          command: 'node -v'
+      - run:
+          name: Print NPM Version
+          command: 'npm -v'
+      - run:
+          name: Install Node Modules
+          command: 'npm install'
+      - save_cache:
+          paths:
+            - node
+            - node_modules
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "package-lock.json" }}
 
-  #     - run:
-  #         name: Give Executable Power
-  #         command: 'chmod +x mvnw'
-  #     - run:
-  #         name: Backend tests
-  #         command: |
-  #           export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
-  #           npm run ci:backend:test
-  #     - run:
-  #         name: Run Front End Tests
-  #         command: npm run ci:frontend:test
+      - run:
+          name: Give Executable Power
+          command: 'chmod +x mvnw'
+      - run:
+          name: Backend tests
+          command: |
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
+            npm run ci:backend:test
+      - run:
+          name: Run Front End Tests
+          command: npm run ci:frontend:test
       # - run:
       #     name: 'E2E: Package'
       #     command: npm run ci:e2e:package
@@ -87,49 +82,32 @@ jobs:
 
   deploy:
     environment:
-      AZURE_WEBAPP_PUBLISH_PROFILE: $AZURE_WEBAPP_PUBLISH_PROFILE
+      AZURE_CLIENT_ID: ab795cd7-5b59-4d1d-afb2-fa04b04db278
+      AZURE_CLIENT_SECRET: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
+      AZURE_TENANT_ID: adce66e5-0a46-4c70-b26c-98866bb294ea
     docker:
       - image: "mcr.microsoft.com/azure-cli"
     steps:
       - attach_workspace:
           at: .
-      # - azure-cli/install
-      # - azure-cli/login:
-      #     az-service-principal-id: ab795cd7-5b59-4d1d-afb2-fa04b04db278
-      #     az-service-principal-password: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
-      #     az-tenant-id: adce66e5-0a46-4c70-b26c-98866bb294ea
-      # - azure-cli/webapp-deploy:
-      #     resource-group: proybase
-      #     name: proybaseappservi
-      #     package: target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
-      #     # slot: production
-      - attach_workspace:
-          at: .
-      # - run:
-      #     name: Install Azure CLI
-      #     command: |
-      #       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       - run:
           name: Authenticate with Azure
           command: |
-            az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
+            az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
       - run:
           name: Deploy to Azure
           command: |
             az webapp deploy --resource-group proybase --name proybaseappservi --src-path $(find . -name "proy*.jar") --type jar --verbose
-      # - run: |
-      #     az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
-      #     az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type jar --verbose
 
 workflows:
   version: 2
   sample:
     jobs:
-      # - build:
-      #       filters:
-      #           branches:
-      #               only:
-      #                   - feature/circleci
+      - build_test:
+            filters:
+                branches:
+                    only:
+                        - feature/circleci
       - deliver:
           filters:
               branches:
