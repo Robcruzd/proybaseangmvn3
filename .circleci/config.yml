@@ -78,10 +78,10 @@ jobs:
           command: |
             export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
             npm run java:jar:prod
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - target/proy*.jar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
       - store_artifacts:
           path: /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
 
