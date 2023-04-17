@@ -81,9 +81,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
+            - target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
       - store_artifacts:
-          path: /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
+          path: target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
 
   deploy:
     environment:
@@ -104,7 +104,7 @@ jobs:
       - run:
           name: Deploy to Azure
           command: |
-            az webapp deployment source config-zip -g proybase -n proybaseappservi --src /home/circleci/project/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
+            az webapp deployment source config-zip -g proybase -n proybaseappservi --src $(pwd)/target/proybaseangmvn-3-0.0.1-SNAPSHOT.jar
       # - run: |
       #     az login --service-principal --username "ab795cd7-5b59-4d1d-afb2-fa04b04db278" --password "I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh" --tenant "adce66e5-0a46-4c70-b26c-98866bb294ea"
       #     az webapp deploy --name proybaseappservi --slot production --package $(find . -name "proy*.jar") --type java --verbose
