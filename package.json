@@ -60,7 +60,7 @@
     "prettier:check": "prettier --check \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,html,cjs,mjs,js,ts,tsx,css,scss,java}\"",
     "prettier:format": "prettier --write \"{,src/**/,webpack/,.blueprint/**/}*.{md,json,yml,html,cjs,mjs,js,ts,tsx,css,scss,java}\"",
     "serve": "npm run start --",
-    "services:up": "docker compose -f src/main/docker/services.yml up --wait",
+    "services:up": "docker-compose -f src/main/docker/services.yml up --wait",
     "start": "ng serve --hmr",
     "start-tls": "npm run webapp:dev-ssl",
     "pretest": "npm run lint",
