@@ -2,7 +2,7 @@ os:
   - linux
 branches:
   only:
-    - travis-ci
+    - feature/travis-ci
 services:
   - docker
 language: node_js
