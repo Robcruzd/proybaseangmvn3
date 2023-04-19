@@ -37,6 +37,7 @@ before_install:
     java -version
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
+  - sudo apt-get install -y docker-compose
   - nvm install $NODE_VERSION
   - npm install -g npm
   - node -v
