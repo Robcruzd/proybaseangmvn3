@@ -46,15 +46,18 @@ before_install:
   - npm -v
 install:
   - npm install
-script:
-  - chmod +x mvnw
-  # - npm run ci:backend:test
-  # - npm run ci:frontend:test
-  # - npm run java:jar:prod
-  # - npm run ci:e2e:package
-  # - npm run ci:e2e:prepare
-  # - npm run ci:e2e:run
-  # - npm run ci:e2e:teardown
+jobs:
+  include:
+    - stage: build
+      script:
+        - chmod +x mvnw
+        - npm run ci:backend:test
+        - npm run ci:frontend:test
+        - npm run java:jar:prod
+        # - npm run ci:e2e:package
+        # - npm run ci:e2e:prepare
+        # - npm run ci:e2e:run
+        # - npm run ci:e2e:teardown
 
 notifications:
   webhooks:
