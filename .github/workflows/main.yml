@@ -3,9 +3,19 @@ permissions:
   pages: write
   id-token: write
 name: Application CI
-on: [push, pull_request]
+on: [
+  push:
+    branches:
+      - feature/githubactions, 
+  pull_request:
+    branches:
+      - feature/githubactions
+  ]
 env:
   NODE_VERSION: 16.17.0
+  CONTAINER_REGISTRY: proybaseacr.azurecr.io
+  IMAGE_REPOSITORY: proybaseImage
+  TAG: ${{ github.run_number }}
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
 jobs:
   test:
@@ -56,32 +66,33 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 17
-    - name: Package application
-      run: npm run java:jar:prod
-    - name: Publish Artifact
-      uses: actions/upload-artifact@v3
+    - name: Login to Azure Container Registry
+      uses: azure/docker-login@v1
       with:
-        name: drop
-        path: ${{ github.workspace }}/target/proy*.jar
+        login-server: proybaseacr.azurecr.io # ${{ env.CONTAINER_REGISTRY }}
+        username: proybaseacr # ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
+        password: snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL # ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+    - name: Build and package the application
+      run: ./mvnw package -Pprod verify jib:build -Djib.to.image=${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: proybaseangmvn3appser
-    steps:
-    - name: Download Artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: drop
-    - name: Login Azure
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"b41dc0ad-0a9c-4ea1-85ab-d4cf4f7edc68","clientSecret":"v-18Q~s_JM4ofu0wCxK4vM2_pkHtg8MTtmSDecjU","subscriptionId":"4dd56670-ac02-43d7-a753-28942b6c28f2","tenantId":"3355dc5e-067f-42b8-8d1a-1b1ebb6657de"}'
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   environment: proybaseangmvn3appser
+  #   steps:
+  #   - name: Download Artifact
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: drop
+  #   - name: Login Azure
+  #     uses: azure/login@v1
+  #     with:
+  #       creds: '{"clientId":"b41dc0ad-0a9c-4ea1-85ab-d4cf4f7edc68","clientSecret":"v-18Q~s_JM4ofu0wCxK4vM2_pkHtg8MTtmSDecjU","subscriptionId":"4dd56670-ac02-43d7-a753-28942b6c28f2","tenantId":"3355dc5e-067f-42b8-8d1a-1b1ebb6657de"}'
 
-    - name: Azure Web App Deploy proybaseangmvn
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: proybaseangmvn3appser
-        package: proy*.jar
-        publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        slot-name: 'production'
+  #   - name: Azure Web App Deploy proybaseangmvn
+  #     uses: azure/webapps-deploy@v2
+  #     with:
+  #       app-name: proybaseangmvn3appser
+  #       package: proy*.jar
+  #       publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
+  #       slot-name: 'production'
