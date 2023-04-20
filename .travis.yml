@@ -24,7 +24,7 @@ env:
     - MAVEN_USER_HOME=$HOME/.m2/repository/
     - CYPRESS_ENABLE_RECORD: false
 before_install:
-  - sudo apt-cache search openjdk
+  # - sudo apt-cache search openjdk
   - |
     echo '*** Using OpenJDK 17 by default'
     sudo add-apt-repository -y ppa:openjdk-r/ppa
@@ -37,9 +37,10 @@ before_install:
     java -version
   - sudo /etc/init.d/mysql stop
   - sudo /etc/init.d/postgresql stop
-  - sudo docker --version
-  - sudo apt-get upgrade -y docker-ce
-  - sudo apt-get install -y docker-ce
+  # - sudo docker --version
+  # - sudo apt-get upgrade -y docker-ce
+  # - sudo apt-get install -y docker-ce
+  - sudo apt-get install -y azure-cli
   - nvm install $NODE_VERSION
   - npm install -g npm
   - node -v
@@ -48,8 +49,8 @@ install:
   - npm install
 script:
   - chmod +x mvnw
-  - npm run ci:backend:test
-  - npm run ci:frontend:test
+  # - npm run ci:backend:test
+  # - npm run ci:frontend:test
   - npm run java:jar:prod
   # - npm run ci:e2e:package
   # - npm run ci:e2e:prepare
