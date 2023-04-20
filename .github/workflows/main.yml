@@ -13,7 +13,7 @@ on:
 env:
   NODE_VERSION: 16.17.0
   CONTAINER_REGISTRY: proybaseacr.azurecr.io
-  IMAGE_REPOSITORY: proybaseImage
+  IMAGE_REPOSITORY: proybase_image
   TAG: ${{ github.run_number }}
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
 jobs:
