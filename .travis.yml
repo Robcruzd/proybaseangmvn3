@@ -40,7 +40,7 @@ before_install:
   # - sudo docker --version
   # - sudo apt-get upgrade -y docker-ce
   # - sudo apt-get install -y docker-ce
-  - sudo apt-get install -y azure-cli
+  - curl -L https://aka.ms/InstallAzureCli | bash
   - nvm install $NODE_VERSION
   - npm install -g npm
   - node -v
