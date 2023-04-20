@@ -6,7 +6,7 @@ name: Application CI
 on: 
   push:
     branches:
-      - feature/githubactions, 
+      - feature/githubactions
   pull_request:
     branches:
       - feature/githubactions
