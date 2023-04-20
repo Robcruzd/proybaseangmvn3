@@ -3,14 +3,13 @@ permissions:
   pages: write
   id-token: write
 name: Application CI
-on: [
+on: 
   push:
     branches:
       - feature/githubactions, 
   pull_request:
     branches:
       - feature/githubactions
-  ]
 env:
   NODE_VERSION: 16.17.0
   CONTAINER_REGISTRY: proybaseacr.azurecr.io
