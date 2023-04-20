@@ -46,28 +46,17 @@ before_install:
   - npm -v
 install:
   - npm install
-stages:
-  - name: build
-    # include:
-    # - stage: test
-    #   script:
-    #     - chmod +x mvnw
-    #     - npm run ci:backend:test
-    #     - npm run ci:frontend:test
-    #     # - npm run java:jar:prod
-    #     # - npm run ci:e2e:package
-    #     # - npm run ci:e2e:prepare
-    #     # - npm run ci:e2e:run
-    #     # - npm run ci:e2e:teardown
-    jobs:
-      - name: deliver
-        script:
-          - npm run java:jar:prod
-        artifacts:
-          paths:
-            - target/*.jar
-    # - stage: deploy
-    #   script:
+script:
+  - chmod +x mvnw
+  - npm run ci:backend:test
+  - npm run ci:frontend:test
+  - npm run java:jar:prod
+  # - npm run ci:e2e:package
+  # - npm run ci:e2e:prepare
+  # - npm run ci:e2e:run
+  # - npm run ci:e2e:teardown
+  - az login --service-principal --username ab795cd7-5b59-4d1d-afb2-fa04b04db278 --password I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
+  - az webapp deploy --resource-group proybase --name proybaseappservi --src-path $(find . -name "proy*.jar") --type jar --verbose
 
 notifications:
   webhooks:
