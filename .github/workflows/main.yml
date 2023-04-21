@@ -88,7 +88,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: '{"clientId":${{AZURE_CLIENT_ID}},"clientSecret":${{AZURE_CLIENT_SECRET}},"subscriptionId":${{SUBSCRIPTION_ID}},"tenantId":${{AZURE_TENANT_ID}}}'
+          creds: '{"clientId":${{env.AZURE_CLIENT_ID}},"clientSecret":${{env.AZURE_CLIENT_SECRET}},"subscriptionId":${{env.SUBSCRIPTION_ID}},"tenantId":${{env.AZURE_TENANT_ID}}}'
       - name: Azure Web App on Container Deploy 
         uses: azure/webapps-deploy@v2
         with:
