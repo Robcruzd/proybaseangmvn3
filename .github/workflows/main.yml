@@ -16,43 +16,49 @@ env:
   IMAGE_REPOSITORY: proybase_image
   TAG: ${{ github.run_number }}
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
+  CONTAINER_REGISTRY_USERNAME: proybaseacr
+  CONTAINER_REGISTRY_PASSWORD: snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL
+  AZURE_CLIENT_ID: ab795cd7-5b59-4d1d-afb2-fa04b04db278
+  AZURE_CLIENT_SECRET: I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh
+  AZURE_TENANT_ID: adce66e5-0a46-4c70-b26c-98866bb294ea
+  SUBSCRIPTION_ID: 8161c636-4f8c-4db8-b758-6fefca0524e6
 jobs:
-  # test:
-  #   name: proybaseangmvn3 pipeline
-  #   runs-on: ubuntu-latest
-  #   if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
-  #   timeout-minutes: 40
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #     - uses: actions/setup-java@v3
-  #       with:
-  #         distribution: 'temurin'
-  #         java-version: 17
-  #     - name: Install node.js packages
-  #       run: npm install
-  #     - name: Run backend test
-  #       run: |
-  #         chmod +x mvnw
-  #         npm run ci:backend:test
-  #     - name: Run frontend test
-  #       run: npm run ci:frontend:test
-  #     - name: Package application
-  #       run: npm run java:jar:prod
-  #     - name: 'E2E: Package'
-  #       run: npm run ci:e2e:package
-  #     - name: 'E2E: Prepare'
-  #       run: npm run ci:e2e:prepare
-  #     - name: 'E2E: Run'
-  #       run: npm run ci:e2e:run
-  #       env:
-  #         CYPRESS_ENABLE_RECORD: false
-  #         CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-  #         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  #     - name: 'E2E: Teardown'
-  #       run: npm run ci:e2e:teardown
+  test:
+    name: proybaseangmvn3 pipeline
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Install node.js packages
+        run: npm install
+      - name: Run backend test
+        run: |
+          chmod +x mvnw
+          npm run ci:backend:test
+      - name: Run frontend test
+        run: npm run ci:frontend:test
+      - name: Package application
+        run: npm run java:jar:prod
+      - name: 'E2E: Package'
+        run: npm run ci:e2e:package
+      - name: 'E2E: Prepare'
+        run: npm run ci:e2e:prepare
+      - name: 'E2E: Run'
+        run: npm run ci:e2e:run
+        env:
+          CYPRESS_ENABLE_RECORD: false
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      - name: 'E2E: Teardown'
+        run: npm run ci:e2e:teardown
 
   build:
     # needs: test
@@ -68,33 +74,11 @@ jobs:
     - name: Login to Azure Container Registry
       uses: azure/docker-login@v1
       with:
-        login-server: proybaseacr.azurecr.io # ${{ env.CONTAINER_REGISTRY }}
-        username: proybaseacr # ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
-        password: snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL # ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+        login-server: ${{ env.CONTAINER_REGISTRY }}
+        username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
+        password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
     - name: Build and package the application
       run: ./mvnw package -Pprod verify jib:build -Djib.to.image=${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
-
-  # deploy:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   environment: proybaseangmvn3appser
-  #   steps:
-  #   - name: Download Artifact
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: drop
-  #   - name: Login Azure
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: '{"clientId":"b41dc0ad-0a9c-4ea1-85ab-d4cf4f7edc68","clientSecret":"v-18Q~s_JM4ofu0wCxK4vM2_pkHtg8MTtmSDecjU","subscriptionId":"4dd56670-ac02-43d7-a753-28942b6c28f2","tenantId":"3355dc5e-067f-42b8-8d1a-1b1ebb6657de"}'
-
-  #   - name: Azure Web App Deploy proybaseangmvn
-  #     uses: azure/webapps-deploy@v2
-  #     with:
-  #       app-name: proybaseangmvn3appser
-  #       package: proy*.jar
-  #       publish-profile: ${{ env.AZURE_WEBAPP_PUBLISH_PROFILE }}
-  #       slot-name: 'production'
 
   deploy:
     name: Deploy
@@ -104,7 +88,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: '{"clientId":"ab795cd7-5b59-4d1d-afb2-fa04b04db278","clientSecret":"I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh","subscriptionId":"8161c636-4f8c-4db8-b758-6fefca0524e6","tenantId":"adce66e5-0a46-4c70-b26c-98866bb294ea"}'
+          creds: '{"clientId":${{AZURE_CLIENT_ID}},"clientSecret":${{AZURE_CLIENT_SECRET}},"subscriptionId":${{SUBSCRIPTION_ID}},"tenantId":${{AZURE_TENANT_ID}}}'
       - name: Azure Web App on Container Deploy 
         uses: azure/webapps-deploy@v2
         with:
