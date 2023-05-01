@@ -34,7 +34,7 @@ env:
     - TAG=$TRAVIS_BUILD_NUMBER
 
 stages:
-  - build
+  # - build
   - deliver
 
 jobs:
