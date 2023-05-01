@@ -32,7 +32,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://proybasedb.cyfwy4s84foc.us-east-2.rds.amazonaws.com:5432/proybasedb
+    url: jdbc:postgresql://proybasedbi.cyfwy4s84foc.us-east-2.rds.amazonaws.com:5432/prybasedb
     username: postgres
     password: ProyBaseJ4v3
     hikari:
