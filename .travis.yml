@@ -96,11 +96,11 @@ jobs:
         provider: script
         script: |
           az login --service-principal -u ab795cd7-5b59-4d1d-afb2-fa04b04db278 -p I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
-          az account set --subscription 8161c636-4f8c-4db8-b758-6fefca0524e6
           az webapp config container set --docker-custom-image-name proybaseacr.azurecr.io/proybase_image:44 --docker-registry-server-password snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL --docker-registry-server-url https://proybaseacr.azurecr.io --docker-registry-server-user proybaseacr --name proybaseappserforcon --resource-group proybase
         on:
           branch: feature/travis-ci
 
+          # az account set --subscription 8161c636-4f8c-4db8-b758-6fefca0524e6
 # # Log into Azure
 # az login --service-principal --username $AZURE_SP_USERNAME --password $AZURE_SP_PASSWORD --tenant $AZURE_SP_TENANT
 
