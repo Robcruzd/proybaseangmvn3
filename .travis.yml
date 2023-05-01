@@ -82,7 +82,7 @@ jobs:
       deploy:
         provider: script
         script: |
-          az webapp config container set --docker-custom-image-name $CONTAINER_REGISTRY/$IMAGE_REPOSITORY:44 --docker-registry-server-password $CONTAINER_REGISTRY_PASSWORD --docker-registry-server-url https://$CONTAINER_REGISTRY --docker-registry-server-user $CONTAINER_REGISTRY_USERNAME --name proybaseappserforcon --resource-group $RESOURCE_GROUP
+          az webapp config container set --docker-custom-image-name proybaseacr.azurecr.io/proybase_image:44 --docker-registry-server-password snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL --docker-registry-server-url https://proybaseacr.azurecr.io --docker-registry-server-user proybaseacr --name proybaseappserforcon --resource-group proybase
         on:
           branch: feature/travis-ci
 
