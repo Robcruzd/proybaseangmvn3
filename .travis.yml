@@ -92,8 +92,7 @@ jobs:
         - node -v
         - npm -v
         - npm install
-      # before_script:
-      #   - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
+        - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
       script:
         - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
 
