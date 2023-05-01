@@ -68,42 +68,21 @@ jobs:
 
     - stage: deliver
       name: Build and package
-      # os: linux
-      # language: java
-      # jdk: openjdk17
       services:
         - docker
       before_script:
-        # - |
-        #   echo '*** Using OpenJDK 17 by default'
-        #   sudo add-apt-repository -y ppa:openjdk-r/ppa
-        #   sudo apt-get update -q
-        #   sudo apt-get install -y openjdk-17-jdk
-        #   sudo apt-get install -y openjdk-17-jre-headless
-        #   sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
-        #   export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-        #   export PATH=$PATH:$JAVA_HOME/bin
-        #   java -version
-        # - sudo /etc/init.d/mysql stop
-        # - sudo /etc/init.d/postgresql stop
-        # - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
         - nvm install $NODE_VERSION
         - npm install -g npm
         - node -v
         - npm -v
         - npm install
-        # - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
         - echo "${CONTAINER_REGISTRY_PASSWORD}" | docker login --username ${CONTAINER_REGISTRY_USERNAME} --password-stdin ${CONTAINER_REGISTRY}
       script:
         - node -v
-        # - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
       deploy:
         provider: script
         script: |
-          az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:44 --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
-        # username: $AZURE_USERNAME
-        # password: $AZURE_PASSWORD
-        # site: $AZURE_SITE_NAME
+          az webapp config container set --docker-custom-image-name $CONTAINER_REGISTRY/$IMAGE_REPOSITORY:44 --docker-registry-server-password $CONTAINER_REGISTRY_PASSWORD --docker-registry-server-url https://$CONTAINER_REGISTRY --docker-registry-server-user $CONTAINER_REGISTRY_USERNAME --name proybaseappserforcon --resource-group $RESOURCE_GROUP
         on:
           branch: feature/travis-ci
 
@@ -140,3 +119,41 @@ notifications:
     on_success: change # options: [always|never|change] default: always
     on_failure: always # options: [always|never|change] default: always
     on_start: false # default: false
+
+# - stage: deliver
+#       name: Build and package
+#       # os: linux
+#       # language: java
+#       # jdk: openjdk17
+#       services:
+#         - docker
+#       before_script:
+#         # - |
+#         #   echo '*** Using OpenJDK 17 by default'
+#         #   sudo add-apt-repository -y ppa:openjdk-r/ppa
+#         #   sudo apt-get update -q
+#         #   sudo apt-get install -y openjdk-17-jdk
+#         #   sudo apt-get install -y openjdk-17-jre-headless
+#         #   sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+#         #   export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+#         #   export PATH=$PATH:$JAVA_HOME/bin
+#         #   java -version
+#         # - sudo /etc/init.d/mysql stop
+#         # - sudo /etc/init.d/postgresql stop
+#         # - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+#         - nvm install $NODE_VERSION
+#         - npm install -g npm
+#         - node -v
+#         - npm -v
+#         - npm install
+#         # - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
+#         - echo "${CONTAINER_REGISTRY_PASSWORD}" | docker login --username ${CONTAINER_REGISTRY_USERNAME} --password-stdin ${CONTAINER_REGISTRY}
+#       script:
+#         - node -v
+#         # - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
+#       deploy:
+#         provider: script
+#         script: |
+#           az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:44 --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
+#         on:
+#           branch: feature/travis-ci
