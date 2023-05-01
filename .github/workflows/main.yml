@@ -84,7 +84,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Azure Login
