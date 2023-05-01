@@ -92,9 +92,35 @@ jobs:
         - node -v
         - npm -v
         - npm install
-        - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
+        # - docker login --username ${CONTAINER_REGISTRY_USERNAME} --password ${CONTAINER_REGISTRY_PASSWORD} ${CONTAINER_REGISTRY}
+        - echo "${CONTAINER_REGISTRY_PASSWORD}" | docker login --username ${CONTAINER_REGISTRY_USERNAME} --password-stdin ${CONTAINER_REGISTRY}
       script:
         - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
+      deploy:
+        provider: script
+        script: |
+          az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
+        # username: $AZURE_USERNAME
+        # password: $AZURE_PASSWORD
+        # site: $AZURE_SITE_NAME
+        # on:
+        #   branch: master
+
+# # Log into Azure
+# az login --service-principal --username $AZURE_SP_USERNAME --password $AZURE_SP_PASSWORD --tenant $AZURE_SP_TENANT
+
+# # Docker log into Azure Container Registry
+# az acr login --name $ACR_NAME
+
+# # Push container Azure Container Registry
+# docker push $ACR_NAME.azurecr.io/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT
+
+# # Obtain Docker credentials from Azure Container Registry
+# ACR_PASSWORD=`az acr credential show --name $ACR_NAME | jq -r '.passwords[0].value'`
+# ACR_USERNAME=`az acr credential show --name $ACR_NAME | jq -r '.username'`
+
+# Deploy the container to Azure Web App
+# az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
 
 # script:
 #   - chmod +x mvnw
