@@ -103,7 +103,7 @@ jobs:
       - name: Print working directory
         run: echo $GITHUB_WORKSPACE
       - name: Debug
-        run: ls -a $GITHUB_WORKSPACE
+        run: ls 
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
