@@ -71,6 +71,18 @@ jobs:
       services:
         - docker
       before_script:
+        - |
+          echo '*** Using OpenJDK 17 by default'
+          sudo add-apt-repository -y ppa:openjdk-r/ppa
+          sudo apt-get update -q
+          sudo apt-get install -y openjdk-17-jdk
+          sudo apt-get install -y openjdk-17-jre-headless
+          sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$PATH:$JAVA_HOME/bin
+          java -version
+        - sudo /etc/init.d/mysql stop
+        - sudo /etc/init.d/postgresql stop
         - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
         - nvm install $NODE_VERSION
         - npm install -g npm
@@ -83,13 +95,13 @@ jobs:
       deploy:
         provider: script
         script: |
-
           az webapp config container set --docker-custom-image-name proybaseacr.azurecr.io/proybase_image:44 --docker-registry-server-password snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL --docker-registry-server-url https://proybaseacr.azurecr.io --docker-registry-server-user proybaseacr --name proybaseappserforcon --resource-group proybase
         on:
           branch: feature/travis-ci
 
 # az login --service-principal -u ab795cd7-5b59-4d1d-afb2-fa04b04db278 -p I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
 #           az account set --subscription 8161c636-4f8c-4db8-b758-6fefca0524e6
+
 # # Log into Azure
 # az login --service-principal --username $AZURE_SP_USERNAME --password $AZURE_SP_PASSWORD --tenant $AZURE_SP_TENANT
 
