@@ -111,9 +111,8 @@ jobs:
           working-directory: ${{ github.workspace }}
           namespace: 'default'
           manifests: |
-            .github/manifests/deployment.yml
-            $GITHUB_WORKSPACE/.github/manifests/service.yml
-            ${{ env.GITHUB_WORKSPACE }}/.github/manifests/service.yml
+            ${{ github.workspace }}/.github/manifests/deployment.yml
+            ${{ github.workspace }}/.github/manifests/service.yml
           images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:60
           pull-images: false 
       - name: Azure logout
