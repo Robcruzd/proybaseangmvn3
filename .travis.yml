@@ -51,10 +51,13 @@ env:
 
 # stages:
 #   - name: Test
+stages:
+  - build
 
 jobs:
   include:
-    - name: Tests
+    - stage: build
+      name: Tests
       before_script:
         - |
           echo '*** Using OpenJDK 17 by default'
