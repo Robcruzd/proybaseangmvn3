@@ -108,8 +108,8 @@ jobs:
         with:
           namespace: 'default'
           manifests: |
-            manifests/deployment.yml
-            manifests/service.yml
+            .github/manifests/deployment.yml
+            .github/manifests/service.yml
           images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:60
           pull-images: false 
       - name: Azure logout
