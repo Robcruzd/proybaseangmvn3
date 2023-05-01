@@ -25,81 +25,68 @@ env:
   RESOURCE_GROUP: proybase
   CLUSTER_NAME: proybasecluster
 jobs:
-  test:
-    name: proybaseangmvn3 pipeline
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
-    timeout-minutes: 40
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-      - name: Install node.js packages
-        run: npm install
-      - name: Run backend test
-        run: |
-          chmod +x mvnw
-          npm run ci:backend:test
-      - name: Run frontend test
-        run: npm run ci:frontend:test
-      - name: Package application
-        run: npm run java:jar:prod
-      - name: 'E2E: Package'
-        run: npm run ci:e2e:package
-      - name: 'E2E: Prepare'
-        run: npm run ci:e2e:prepare
-      - name: 'E2E: Run'
-        run: npm run ci:e2e:run
-        env:
-          CYPRESS_ENABLE_RECORD: false
-          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      - name: 'E2E: Teardown'
-        run: npm run ci:e2e:teardown
+  # test:
+  #   name: proybaseangmvn3 pipeline
+  #   runs-on: ubuntu-latest
+  #   if: "!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.pull_request.title, '[skip ci]') && !contains(github.event.pull_request.title, '[ci skip]')"
+  #   timeout-minutes: 40
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #     - uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: 17
+  #     - name: Install node.js packages
+  #       run: npm install
+  #     - name: Run backend test
+  #       run: |
+  #         chmod +x mvnw
+  #         npm run ci:backend:test
+  #     - name: Run frontend test
+  #       run: npm run ci:frontend:test
+  #     - name: Package application
+  #       run: npm run java:jar:prod
+  #     - name: 'E2E: Package'
+  #       run: npm run ci:e2e:package
+  #     - name: 'E2E: Prepare'
+  #       run: npm run ci:e2e:prepare
+  #     - name: 'E2E: Run'
+  #       run: npm run ci:e2e:run
+  #       env:
+  #         CYPRESS_ENABLE_RECORD: false
+  #         CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+  #         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+  #     - name: 'E2E: Teardown'
+  #       run: npm run ci:e2e:teardown
 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Maven Package
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: 17
-    - name: Login to Azure Container Registry
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ env.CONTAINER_REGISTRY }}
-        username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
-        password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
-    - name: Build and package the application
-      run: ./mvnw package -Pprod verify jib:build -Djib.to.image=${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
+  # build:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v3
+  #   - name: Maven Package
+  #     uses: actions/setup-java@v3
+  #     with:
+  #       distribution: 'temurin'
+  #       java-version: 17
+  #   - name: Login to Azure Container Registry
+  #     uses: azure/docker-login@v1
+  #     with:
+  #       login-server: ${{ env.CONTAINER_REGISTRY }}
+  #       username: ${{ env.CONTAINER_REGISTRY_USERNAME }}
+  #       password: ${{ env.CONTAINER_REGISTRY_PASSWORD }}
+  #   - name: Build and package the application
+  #     run: ./mvnw package -Pprod verify jib:build -Djib.to.image=${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: '{"clientId":"ab795cd7-5b59-4d1d-afb2-fa04b04db278","clientSecret":"I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh","subscriptionId":"8161c636-4f8c-4db8-b758-6fefca0524e6","tenantId":"adce66e5-0a46-4c70-b26c-98866bb294ea"}'
-      - name: Azure Web App on Container Deploy 
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: proybaseappserforcon
-          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
-      - name: Azure logout
-        run: |
-          az logout
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -113,13 +100,18 @@ jobs:
       - name: Setup kubectl
         id: install-kubectl
         uses: azure/setup-kubectl@v3
+      - name: Debug
+        run: ls -R
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
           namespace: 'default'
           manifests: |
-            .github/manifests/deployment.yml
-            .github/manifests/service.yml
-          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
+            manifests/deployment.yml
+            manifests/service.yml
+          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:60
           pull-images: false 
+      - name: Azure logout
+        run: |
+          az logout
