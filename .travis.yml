@@ -34,40 +34,37 @@ env:
     - TAG=$TRAVIS_BUILD_NUMBER
 
 stages:
-  # - build
-  - deliver
+  - test
+  - deploy
 
 jobs:
   include:
-    # - stage: build
-    #   name: Tests
-    #   before_script:
-    #     - |
-    #       echo '*** Using OpenJDK 17 by default'
-    #       sudo add-apt-repository -y ppa:openjdk-r/ppa
-    #       sudo apt-get update -q
-    #       sudo apt-get install -y openjdk-17-jdk
-    #       sudo apt-get install -y openjdk-17-jre-headless
-    #       sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
-    #       export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-    #       export PATH=$PATH:$JAVA_HOME/bin
-    #       java -version
-    #     - sudo /etc/init.d/mysql stop
-    #     - sudo /etc/init.d/postgresql stop
-    #     # - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    #     - nvm install $NODE_VERSION
-    #     - npm install -g npm
-    #     - node -v
-    #     - npm -v
-    #     - npm install
-    #   script:
-    #     - chmod +x mvnw
-    #     - npm run ci:backend:test
-    #     - npm run ci:frontend:test
-    # - npm run java:jar:prod
+    - stage: test
+      name: Tests
+      before_script:
+        - |
+          echo '*** Using OpenJDK 17 by default'
+          sudo add-apt-repository -y ppa:openjdk-r/ppa
+          sudo apt-get update -q
+          sudo apt-get install -y openjdk-17-jdk
+          sudo apt-get install -y openjdk-17-jre-headless
+          sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export PATH=$PATH:$JAVA_HOME/bin
+          java -version
+        - sudo /etc/init.d/mysql stop
+        - sudo /etc/init.d/postgresql stop
+        # - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        - nvm install $NODE_VERSION
+        - npm install -g npm
+        - npm install
+      script:
+        - chmod +x mvnw
+        - npm run ci:backend:test
+        - npm run ci:frontend:test
 
-    - stage: deliver
-      name: Build and package
+    - stage: deploy
+      name: Build, package and deploy
       services:
         - docker
       before_script:
@@ -86,17 +83,15 @@ jobs:
         - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
         - nvm install $NODE_VERSION
         - npm install -g npm
-        - node -v
-        - npm -v
         - npm install
         - echo "${CONTAINER_REGISTRY_PASSWORD}" | docker login --username ${CONTAINER_REGISTRY_USERNAME} --password-stdin ${CONTAINER_REGISTRY}
-        - az login --service-principal -u ab795cd7-5b59-4d1d-afb2-fa04b04db278 -p I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh --tenant adce66e5-0a46-4c70-b26c-98866bb294ea
+        - az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
       script:
-        - node -v
+        - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
       deploy:
         provider: script
         script:
-          - az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:44 --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
+          - az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
         on:
           branch: feature/travis-ci
 
@@ -107,27 +102,8 @@ jobs:
 # # Docker log into Azure Container Registry
 # az acr login --name $ACR_NAME
 
-# # Push container Azure Container Registry
-# docker push $ACR_NAME.azurecr.io/$DOCKER_IMAGE_NAME:$TRAVIS_COMMIT
-
-# # Obtain Docker credentials from Azure Container Registry
-# ACR_PASSWORD=`az acr credential show --name $ACR_NAME | jq -r '.passwords[0].value'`
-# ACR_USERNAME=`az acr credential show --name $ACR_NAME | jq -r '.username'`
-
 # Deploy the container to Azure Web App
 # az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
-
-# script:
-#   - chmod +x mvnw
-#   - npm run ci:backend:test
-#   - npm run ci:frontend:test
-#   - npm run java:jar:prod
-#   # - npm run ci:e2e:package    el comando docker compose no funciona, da error
-#   # - npm run ci:e2e:prepare
-#   # - npm run ci:e2e:run
-#   # - npm run ci:e2e:teardown
-#   - az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-#   - az webapp deploy --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --src-path $(find . -name "proy*.jar") --type jar --verbose
 
 notifications:
   webhooks:
