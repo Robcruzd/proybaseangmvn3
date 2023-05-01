@@ -100,7 +100,7 @@ jobs:
       deploy:
         provider: script
         script: |
-          az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
+          az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:44 --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
         # username: $AZURE_USERNAME
         # password: $AZURE_PASSWORD
         # site: $AZURE_SITE_NAME
