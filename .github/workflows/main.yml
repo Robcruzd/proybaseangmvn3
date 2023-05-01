@@ -111,7 +111,6 @@ jobs:
           working-directory: ${{ github.workspace }}
           namespace: 'default'
           manifests: |
-            deployment.yml
             ${{ github.workspace }}/deployment.yml
           images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:60
           pull-images: false 
