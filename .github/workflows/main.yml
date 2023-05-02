@@ -105,9 +105,9 @@ jobs:
       - name: Debug
         run: |
           pwd
-          ls /home/runner/work/
-          ls /home/runner/work/proybaseangmvn3/
+          ls /
           ls /home/runner/work/proybaseangmvn3/proybaseangmvn3/
+          ls /home/
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
