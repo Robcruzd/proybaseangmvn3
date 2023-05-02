@@ -101,7 +101,7 @@ jobs:
       #   id: install-kubectl
       #   uses: azure/setup-kubectl@v3
       - name: Print working directory
-        run: find / -name README.md
+        run: find / -name deployment.yml
       - name: Debug
         run: |
           pwd
