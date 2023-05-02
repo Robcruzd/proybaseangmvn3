@@ -87,21 +87,21 @@ jobs:
     # needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: '{"clientId":"ab795cd7-5b59-4d1d-afb2-fa04b04db278","clientSecret":"I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh","subscriptionId":"8161c636-4f8c-4db8-b758-6fefca0524e6","tenantId":"adce66e5-0a46-4c70-b26c-98866bb294ea"}'
-      - name: Set AKS context
-        id: set-context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: '${{ env.RESOURCE_GROUP }}' 
-          cluster-name: '${{ env.CLUSTER_NAME }}'
-      - name: Setup kubectl
-        id: install-kubectl
-        uses: azure/setup-kubectl@v3
+      # - name: Azure Login
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: '{"clientId":"ab795cd7-5b59-4d1d-afb2-fa04b04db278","clientSecret":"I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh","subscriptionId":"8161c636-4f8c-4db8-b758-6fefca0524e6","tenantId":"adce66e5-0a46-4c70-b26c-98866bb294ea"}'
+      # - name: Set AKS context
+      #   id: set-context
+      #   uses: azure/aks-set-context@v3
+      #   with:
+      #     resource-group: '${{ env.RESOURCE_GROUP }}' 
+      #     cluster-name: '${{ env.CLUSTER_NAME }}'
+      # - name: Setup kubectl
+      #   id: install-kubectl
+      #   uses: azure/setup-kubectl@v3
       - name: Print working directory
-        run: echo $GITHUB_WORKSPACE
+        run: sudo chmod -R 777 /home/runner/work/proybaseangmvn3/proybaseangmvn3/
       - name: Debug
         run: |
           pwd
