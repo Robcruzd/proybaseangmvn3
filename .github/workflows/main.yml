@@ -101,13 +101,11 @@ jobs:
       #   id: install-kubectl
       #   uses: azure/setup-kubectl@v3
       - name: Print working directory
-        run: sudo chmod -R 777 /home/runner/work/proybaseangmvn3/proybaseangmvn3/
+        run: find / -name README.md
       - name: Debug
         run: |
           pwd
-          ls /
-          ls /home/runner/work/proybaseangmvn3/proybaseangmvn3/
-          ls /home/
+          ls /home/runner/
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
