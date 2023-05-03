@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: robcruzdproybaseangmvn
+  name: proybaseangmvn3
 spec:
   type: LoadBalancer
   ports:
     - port: 80
   selector:
-    app: robcruzdproybaseangmvn
+    app: proybaseangmvn3

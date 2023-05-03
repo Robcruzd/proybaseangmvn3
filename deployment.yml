@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: robcruzdproybaseangmvn
+  name: proybaseangmvn3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: robcruzdproybaseangmvn
+      app: proybaseangmvn3
   template:
     metadata:
       labels:
-        app: robcruzdproybaseangmvn
+        app: proybaseangmvn3
     spec:
       containers:
-        - name: proybaseangmvn3
-          image: proybaseangmvn3.azurecr.io/proybaseangmvn3
+        - name: proybaseacr
+          image: proybaseacr.azurecr.io/proybase_image
           ports:
             - containerPort: 80

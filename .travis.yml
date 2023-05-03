@@ -98,7 +98,7 @@ jobs:
           - az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${CLUSTER_NAME}
           # Deploy to AKS
           - kubectl apply -f deployment.yml -f service.yml
-          - kubectl set image deployment/robcruzdproybaseangmvn my-container=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
+          - kubectl set image deployment/proybaseangmvn3 my-container=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
         on:
           branch: feature/travis-ci
 
