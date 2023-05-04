@@ -90,17 +90,18 @@ jobs:
         - az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}
       script:
         - ./mvnw package -Pprod verify jib:build -Djib.to.image=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
-      deploy:
-        provider: script
-        script:
-          - az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
-          # Set AKS context
-          - az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${CLUSTER_NAME}
-          # Deploy to AKS
-          - kubectl apply -f deployment.yml -f service.yml
-          - kubectl set image deployment/proybaseangmvn3 my-container=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
-        on:
-          branch: feature/travis-ci
+        - az webapp config container set --docker-custom-image-name ${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG} --docker-registry-server-password ${CONTAINER_REGISTRY_PASSWORD} --docker-registry-server-url https://${CONTAINER_REGISTRY} --docker-registry-server-user ${CONTAINER_REGISTRY_USERNAME} --name proybaseappserforcon --resource-group ${RESOURCE_GROUP}
+        # Set AKS context
+        - az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${CLUSTER_NAME}
+        # Deploy to AKS
+        - kubectl apply -f deployment.yml -f service.yml
+        - kubectl set image deployment/proybaseangmvn3 my-container=${CONTAINER_REGISTRY}/${IMAGE_REPOSITORY}:${TAG}
+      # deploy:
+      #   provider: script
+      #   script:
+
+      #   on:
+      #     branch: feature/travis-ci
 
 notifications:
   webhooks:
