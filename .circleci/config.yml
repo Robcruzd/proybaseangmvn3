@@ -81,7 +81,7 @@ jobs:
       - run:
           name: Build and package the application
           command: |
-            ./mvnw package -Pprod verify jib:build -Djib.to.image=$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$TAG
+            ./mvnw package -Pprod verify jib:build -Djib.to.image=$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$CIRCLE_TAG
 
   deploy:
     environment:
