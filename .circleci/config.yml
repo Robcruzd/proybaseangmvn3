@@ -65,7 +65,6 @@ jobs:
       CONTAINER_REGISTRY: proybaseazcr.azurecr.io
       CONTAINER_REGISTRY_USERNAME: proybaseazcr
       IMAGE_REPOSITORY: proybase_image
-      TAG: $CIRCLE_TAG
     machine:
       image: ubuntu-2004:current
     steps:
@@ -81,7 +80,7 @@ jobs:
       - run:
           name: Build and package the application
           command: |
-            ./mvnw package -Pprod verify jib:build -Djib.to.image=$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$CIRCLE_BUILD_NUM
+            ./mvnw package -Pprod verify jib:build -Djib.to.image=$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$TAG
 
   deploy:
     environment:
@@ -93,7 +92,6 @@ jobs:
       AZURE_APP_NAME: proybaseappservcon
       CONTAINER_REGISTRY: proybaseazcr.azurecr.io
       IMAGE_REPOSITORY: proybase_image
-      TAG: $CIRCLE_TAG
     docker:
       - image: "mcr.microsoft.com/azure-cli"
     steps:
@@ -105,10 +103,13 @@ jobs:
             az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
       - run:
           name: Azure Web App on Container Deploy
-          command: az webapp create --resource-group "$AZURE_RESOURCE_GROUP" --plan "$AZURE_APP_SERVICE_PLAN" --name "$AZURE_APP_NAME" --deployment-container-image-name "$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$CIRCLE_BUILD_NUM"
+          command: az webapp create --resource-group "$AZURE_RESOURCE_GROUP" --plan "$AZURE_APP_SERVICE_PLAN" --name "$AZURE_APP_NAME" --deployment-container-image-name "$CONTAINER_REGISTRY/$IMAGE_REPOSITORY:$TAG"
       - run:
           name: Azure logout
           command: az logout
+
+environment:
+  TAG: $CIRCLE_BUILD_NUM
 
 workflows:
   version: 2
