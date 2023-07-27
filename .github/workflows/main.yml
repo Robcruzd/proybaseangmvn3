@@ -12,11 +12,11 @@ on:
       - feature/githubactions
 env:
   NODE_VERSION: 16.17.0
-  CONTAINER_REGISTRY: proybaseacr.azurecr.io
+  CONTAINER_REGISTRY: proybaseazcr.azurecr.io
   IMAGE_REPOSITORY: proybase_image
   TAG: ${{ github.run_number }}
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} 
-  CONTAINER_REGISTRY_USERNAME: proybaseacr
+  CONTAINER_REGISTRY_USERNAME: proybaseazcr
   CONTAINER_REGISTRY_PASSWORD: snhgVZobG1MvfOieAa/wU1ZVz/iDKi9p+yvQS+mVxr+ACRBLLENL
   AZURE_CLIENT_ID: "ab795cd7-5b59-4d1d-afb2-fa04b04db278"
   AZURE_CLIENT_SECRET: "I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh"
@@ -92,7 +92,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: '{"clientId":"ab795cd7-5b59-4d1d-afb2-fa04b04db278","clientSecret":"I5K8Q~e14r-IQ9sVcSeWD7g1TzqGLm8zrX8Rjadh","subscriptionId":"8161c636-4f8c-4db8-b758-6fefca0524e6","tenantId":"adce66e5-0a46-4c70-b26c-98866bb294ea"}'
+          creds: '{"clientId":"db6dec96-0d60-469f-9659-f3b3fa4438af","clientSecret":"PwY8Q~RtLq4vCMuiL.DskxDHiWjBynFRnSKvgdBZ","subscriptionId":"b4393866-4e3f-451d-af0d-c3782d16f427","tenantId":"642abfe9-8349-406e-a44c-45336e1e0e3c"}'
       - name: Set AKS context
         id: set-context
         uses: azure/aks-set-context@v3
