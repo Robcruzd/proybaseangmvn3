@@ -113,7 +113,7 @@ jobs:
           manifests: |
             .github/manifests/deployment.yml
             .github/manifests/service.yml
-          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:60
+          images: ${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:71
           pull-images: false 
       - name: Azure logout
         run: |
