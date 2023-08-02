@@ -82,8 +82,8 @@ jobs:
   #   - name: Build and package the application
   #     run: ./mvnw package -Pprod verify jib:build -Djib.to.image=${{ env.CONTAINER_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.TAG }}
 
-# value: PwY8Q~RtLq4vCMuiL.DskxDHiWjBynFRnSKvgdBZ
-# secretid: e68f9f9b-7b04-41ba-9ffa-cc59f16f624b
+# value: duU8Q~B6u3Di2fXKdndbkeeZM1Jz8f8v6xTt8aPL
+# secretid: a50f264d-9544-4c50-90cc-676648864a8c
   deploy:
     name: Deploy
     # needs: build
@@ -94,7 +94,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: '{"clientId":"db6dec96-0d60-469f-9659-f3b3fa4438af","clientSecret":"PwY8Q~RtLq4vCMuiL.DskxDHiWjBynFRnSKvgdBZ","subscriptionId":"b4393866-4e3f-451d-af0d-c3782d16f427","tenantId":"642abfe9-8349-406e-a44c-45336e1e0e3c"}'
+          creds: '{"clientId":"7eecbc41-597f-48fc-9ddf-76f43f819d05","clientSecret":"duU8Q~B6u3Di2fXKdndbkeeZM1Jz8f8v6xTt8aPL","subscriptionId":"b4393866-4e3f-451d-af0d-c3782d16f427","tenantId":"642abfe9-8349-406e-a44c-45336e1e0e3c"}'
       - name: Set AKS context
         id: set-context
         uses: azure/aks-set-context@v3
